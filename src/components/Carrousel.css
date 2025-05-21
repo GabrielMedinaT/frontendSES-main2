@@ -1,0 +1,21 @@
+#carousel {
+    width: 200px;
+    height: 200px;
+}
+.slide {
+    width: 200px;
+    height: 200px;
+    animation-name: fade;
+    animation-duration: 2s;
+    margin: auto;
+}
+
+@keyframes fade {
+    from {
+        opacity: .2
+    }
+
+    to {
+        opacity: 1
+    }
+}

@@ -1,0 +1,142 @@
+@font-face {
+  font-family: 'Ranchers';
+  font-style: normal;
+  font-weight: normal;
+  src: url('./assets/Ranchers-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: bold;
+  src: url('./assets/SpaceMono-Bold.ttf') format('truetype');
+}
+
+/* Reset y estilos generales */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+  text-decoration: none;
+}
+
+/* Texto general */
+* {
+  color: black;
+  text-align: center;
+}
+
+/* Contenedor principal */
+#root {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Cabecera */
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 6vh;
+  width: 100vw;
+}
+
+/* Contenedor de Título Consumo Agua y Luz */
+.title {
+  border-radius: 25px;
+  font-family: "Ranchers", sans-serif;
+  font-size: 50px;
+  width: 35vw;
+}
+
+/* Carteles de luz y agua */
+.titleBanners {
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 5vh;
+  width: 90vw;
+}
+
+.electricityBanner,
+.waterBanner {
+  align-items: center;
+  backdrop-filter: blur(5px);
+  border-radius: 25px;
+  border: 1.5px solid rgba(209, 213, 219, 0.3);
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+  display: flex;
+  font-family: "Ranchers", sans-serif;
+  font-size: 60px;
+  justify-content: center;
+  width: 40%;
+}
+
+.electricityBanner {
+  background: rgba(255, 241, 153, 0.433);
+}
+
+.waterBanner {
+  background: rgba(129, 186, 221, 0.732);
+}
+
+.droplet,
+.star {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 60px;
+  margin: 10px 25px;
+  width: 60px;
+}
+
+.droplet {
+  background-image: url("./assets/gota.png");
+}
+
+.star {
+  background-image: url("./assets/estrella.png");
+}
+
+/* Contenedor de gráficas de consumo */
+.graphContainer {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 5vh;
+  width: 90vw;
+}
+
+/* Estilos comunes para los cuadros de consumo */
+.electricityGraph,
+.waterGraph {
+  backdrop-filter: blur(5px);
+  border-radius: 30px;
+  border: 1.5px solid rgba(209, 213, 219, 0.3);
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+  padding: 10px;
+  width: 40%;
+}
+
+.electricityGraph {
+  background-color: rgba(255, 241, 153, 0.433);
+}
+
+.waterGraph {
+  background-color: rgba(129, 186, 221, 0.732);
+}
+
+.bottomText {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-family: "Space Mono", monospace;
+  height: 15vh;
+  justify-content: space-evenly;
+  * {max-width: 85%;}
+}

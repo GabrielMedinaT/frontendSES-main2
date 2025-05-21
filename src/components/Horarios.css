@@ -1,0 +1,189 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+/* From Uiverse.io by Praashoo7 */ 
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-bottom: 0.4em;
+  background-color: #6A573B;
+  border-radius: 25px;
+  transition: .4s ease-in-out;
+}
+
+.form:hover {
+  transform: scale(1.05);
+  border: 1px solid #372E20;
+}
+
+#heading {
+  text-align: center;
+  margin: 2em;
+  color: #CAB9A0;
+  font-size: 1.2em;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  border-radius: 25px;
+  padding: 0.6em;
+  border: none;
+  outline: none;
+  color: #CAB9A0;
+  background-color: #372E20;
+  box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+}
+
+.input-icon {
+  height: 1.3em;
+  width: 1.3em;
+  fill: #CAB9A0;
+}
+
+.input-field {
+  background: none;
+  border: none;
+  outline: none;
+  width: 100%;
+  color: #CAB9A0;
+}
+
+.form .btn {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.button1 {
+  padding: 0.5em;
+  padding-left: 1.1em;
+  padding-right: 1.1em;
+  border-radius: 5px;
+  margin-right: 0.5em;
+  border: none;
+  outline: none;
+  transition: .4s ease-in-out;
+  background-color: #372E20;
+  color: #CAB9A0;
+}
+
+.button1:hover {
+  background-color: black;
+  color: #CAB9A0;
+}
+
+.button2 {
+  padding: 0.5em;
+  padding-left: 2.3em;
+  padding-right: 2.3em;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  transition: .4s ease-in-out;
+  background-color: #372E20;
+  color: #CAB9A0;
+}
+
+.button2:hover {
+  background-color: black;
+  color: #CAB9A0;
+}
+
+.button3 {
+  margin-bottom: 3em;
+  padding: 0.5em;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  transition: .4s ease-in-out;
+  background-color: #372E20;
+  color: #CAB9A0;
+}
+
+.button3:hover {
+  background-color: red;
+  color: #CAB9A0;
+}
+
+.principal{
+  background-color: #6A573B;
+  padding: 3em;
+  border-radius: 1em;
+}
+.turno{
+  border-bottom: 1px solid #CAB9A0;
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.horarios{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 2vh;
+  width: 87%;
+
+}
+.timeInput{
+  color: #CAB9A0;
+  background-color: #372E20;
+  border: none;
+  padding: 2px;
+  border-radius: 5px;
+}
+.selectKiosko{
+  background-color: #372E20;
+  border: none;
+  padding: 4px;
+  border-radius: 5px;
+  color: #CAB9A0;
+}
