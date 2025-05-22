@@ -40,7 +40,7 @@
 .read-the-docs {
   color: #888;
 }
-/* From Uiverse.io by Praashoo7 */ 
+/* From Uiverse.io by Praashoo7 */
 .form {
   display: flex;
   flex-direction: column;
@@ -48,20 +48,20 @@
   padding-left: 2em;
   padding-right: 2em;
   padding-bottom: 0.4em;
-  background-color: #6A573B;
+  background-color: #6a573b;
   border-radius: 25px;
-  transition: .4s ease-in-out;
+  transition: 0.4s ease-in-out;
 }
 
 .form:hover {
   transform: scale(1.05);
-  border: 1px solid #372E20;
+  border: 1px solid #372e20;
 }
 
 #heading {
   text-align: center;
   margin: 2em;
-  color: #CAB9A0;
+  color: #cab9a0;
   font-size: 1.2em;
 }
 
@@ -74,15 +74,15 @@
   padding: 0.6em;
   border: none;
   outline: none;
-  color: #CAB9A0;
-  background-color: #372E20;
+  color: #cab9a0;
+  background-color: #372e20;
   box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
 }
 
 .input-icon {
   height: 1.3em;
   width: 1.3em;
-  fill: #CAB9A0;
+  fill: #cab9a0;
 }
 
 .input-field {
@@ -90,7 +90,7 @@
   border: none;
   outline: none;
   width: 100%;
-  color: #CAB9A0;
+  color: #cab9a0;
 }
 
 .form .btn {
@@ -109,14 +109,14 @@
   margin-right: 0.5em;
   border: none;
   outline: none;
-  transition: .4s ease-in-out;
-  background-color: #372E20;
-  color: #CAB9A0;
+  transition: 0.4s ease-in-out;
+  background-color: #372e20;
+  color: #cab9a0;
 }
 
 .button1:hover {
   background-color: black;
-  color: #CAB9A0;
+  color: #cab9a0;
 }
 
 .button2 {
@@ -126,14 +126,14 @@
   border-radius: 5px;
   border: none;
   outline: none;
-  transition: .4s ease-in-out;
-  background-color: #372E20;
-  color: #CAB9A0;
+  transition: 0.4s ease-in-out;
+  background-color: #372e20;
+  color: #cab9a0;
 }
 
 .button2:hover {
   background-color: black;
-  color: #CAB9A0;
+  color: #cab9a0;
 }
 
 .button3 {
@@ -142,48 +142,72 @@
   border-radius: 5px;
   border: none;
   outline: none;
-  transition: .4s ease-in-out;
-  background-color: #372E20;
-  color: #CAB9A0;
+  transition: 0.4s ease-in-out;
+  background-color: #372e20;
+  color: #cab9a0;
 }
 
 .button3:hover {
   background-color: red;
-  color: #CAB9A0;
+  color: #cab9a0;
 }
 
-.principal{
-  background-color: #6A573B;
+.principal {
+  background-color: #6a573b;
   padding: 3em;
   border-radius: 1em;
 }
-.turno{
-  border-bottom: 1px solid #CAB9A0;
+.turno {
+  border-bottom: 1px solid #cab9a0;
   padding-bottom: 10px;
   display: flex;
   justify-content: center;
   gap: 10px;
 }
 
-.horarios{
+.horarios {
   display: flex;
   justify-content: center;
   gap: 10px;
   margin: 2vh;
   width: 87%;
-
 }
-.timeInput{
-  color: #CAB9A0;
-  background-color: #372E20;
+
+button {
+  padding: 0.5em;
+  padding-left: 2.3em;
+  padding-right: 2.3em;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  transition: 0.4s ease-in-out;
+  background-color: #3b2c14;
+  color: #cab9a0;
+}
+
+.timeInput1{
+  color: #cab9a0;
+  background-color: green;
   border: none;
   padding: 2px;
   border-radius: 5px;
 }
-.selectKiosko{
-  background-color: #372E20;
+.timeInput2{
+  color: #cab9a0;
+  background-color: rgb(128, 11, 0);
+  border: none;
+  padding: 2px;
+  border-radius: 5px;
+}
+
+.selectKiosko {
+  background-color: #372e20;
   border: none;
   padding: 4px;
   border-radius: 5px;
-  color: #CAB9A0;
+  color: #cab9a0;
+}
+th{
+  padding-left:  20px;
+  padding-right:   20px;
 }

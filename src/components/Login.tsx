@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 
-export default function Login({ onLogin }) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+interface LoginProps {
+  onLogin: (username: string, password: string) => void;
+}
 
-  const handleSubmit = (e) => {
+export default function Login({ onLogin }: LoginProps) {
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onLogin(username, password);
   };

@@ -140,3 +140,6 @@
   justify-content: space-evenly;
   * {max-width: 85%;}
 }
+button:hover{
+  cursor: pointer;
+}

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Login from "./Login";
-import Seleccion from "./Seleccion"; // el componente que quieres mostrar tras login
+import Seleccion from "./Seleccion";
 import "./Horarios.css";
 
 export default function Horarios() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  const handleLogin = (username, password) => {
+  const handleLogin = (username: string, password: string): void => {
     if (username === "admin" && password === "1234") {
       setIsAuthenticated(true);
     } else {

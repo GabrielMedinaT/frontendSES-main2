@@ -1,32 +1,38 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
+
+interface Horario {
+  device: string;
+  startTime: string;
+  endTime: string;
+}
 
 export default function Tarde() {
-  const [encendido, setEncendido] = useState("");
-  const [apagado, setApagado] = useState("");
-  const [error, setError] = useState("");
-  const [kioskoSeleccionado, setKioskoSeleccionado] = useState("default");
-  const [horarioActual, setHorarioActual] = useState(null);
+  const [encendido, setEncendido] = useState<string>("");
+  const [apagado, setApagado] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [kioskoSeleccionado, setKioskoSeleccionado] = useState<string>("default");
+  const [horarioActual, setHorarioActual] = useState<Horario | null>(null);
 
-  const idMap = {
+  const idMap: Record<string, number> = {
     kiosko1: 2,
     kiosko2: 4,
     kiosko3: 6,
   };
 
-  const compararHoras = (h1, h2) => {
+  const compararHoras = (h1: string, h2: string): number => {
     const [h1h, h1m] = h1.split(":").map(Number);
     const [h2h, h2m] = h2.split(":").map(Number);
     return h1h * 60 + h1m - (h2h * 60 + h2m);
   };
 
-  const cargarHorario = (kiosko) => {
+  const cargarHorario = (kiosko: string): void => {
     const id = idMap[kiosko];
     fetch(`http://2.139.196.172:3306/api/powers/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error("Error al obtener horario");
         return res.json();
       })
-      .then((data) => {
+      .then((data: Horario) => {
         setHorarioActual(data);
         setEncendido(data.startTime);
         setApagado(data.endTime);
@@ -37,7 +43,7 @@ export default function Tarde() {
       });
   };
 
-  const handleGuardar = () => {
+  const handleGuardar = (): void => {
     setError("");
 
     if (!encendido || !apagado) {
@@ -90,7 +96,7 @@ export default function Tarde() {
         if (!res.ok) throw new Error("Error al guardar");
         return res.json();
       })
-      .then((data) => {
+      .then((data: Horario) => {
         alert(
           `Horario actualizado:\nEncendido: ${data.startTime}\nApagado: ${data.endTime}`
         );
@@ -102,7 +108,7 @@ export default function Tarde() {
       });
   };
 
-  const handleSeleccion = (e) => {
+  const handleSeleccion = (e: ChangeEvent<HTMLSelectElement>): void => {
     const kiosko = e.target.value;
     setKioskoSeleccionado(kiosko);
     if (kiosko !== "default") {
@@ -128,7 +134,7 @@ export default function Tarde() {
         </select>
         <div className="horarios">
           <input
-            className="timeInput"
+            className="timeInput1"
             type="time"
             value={encendido}
             onChange={(e) => setEncendido(e.target.value)}
@@ -136,7 +142,7 @@ export default function Tarde() {
             max="23:15"
           />
           <input
-            className="timeInput"
+            className="timeInput2"
             type="time"
             value={apagado}
             onChange={(e) => setApagado(e.target.value)}
@@ -151,7 +157,7 @@ export default function Tarde() {
       {horarioActual && (
         <div style={{ marginTop: "20px" }}>
           <h3>Horario actual</h3>
-          <table border="1" cellPadding="5">
+          <table border={1} cellPadding={5}>
             <thead>
               <tr>
                 <th>Dispositivo</th>
