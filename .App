@@ -1,43 +1,38 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import "./App.css";
-import { Carousel } from "./components/Carrousel";
+import { Carousel } from "./src/components/Carrousel";
 
 import LogoRincon from "./assets/logo-rincon.svg";
 import SES from "/SmartEcoSchoolSquared.png";
 import LogoZazume from "./assets/logo-zazume.svg";
 import QRSes from "./assets/qr-ses.svg";
-import ThermometerChart from "./components/ThermometerChart";
-import WaterDropChart from "./components/WaterDropCharp";
+import ThermometerChart from "./src/components/ThermometerChart";
+import WaterDropChart from "./src/components/WaterDropCharp";
 
-// Interfaz que define la estructura esperada de los datos del sensor
 interface ConsumoData {
   idSensor: number;
   fecha: string;
   consumo?: number;
-  incremento: number; // Este campo ya viene calculado desde la base de dato con un trigger
+  incremento: number;
   costo?: number;
   medidas: number;
 }
 
 function App() {
-  // Estados para los diferentes tipos de datos
   const [consumoLuz, setConsumoLuz] = useState<ConsumoData[]>([]);
   const [consumoAgua, setConsumoAgua] = useState<ConsumoData[]>([]);
   const [consumoLuzAyer, setConsumoLuzAyer] = useState<number>(1);
   const [consumoAguaAyer, setConsumoAguaAyer] = useState<number>(1);
   const [temperatura, setTemperatura] = useState<number>(25);
   const [humedad, setHumedad] = useState<number>(60);
-  const hashRef = useRef<string>(""); // Referencia para evitar recargas innecesarias
+  const hashRef = useRef<string>("");
 
-  // Suma los valores de incremento de una lista de datos
   const getTotalValue = (arr: ConsumoData[]): number =>
     arr.reduce((acc: number, val: ConsumoData) => acc + (val.incremento || 0), 0);
 
-  // Memoriza el total para que no se recalculen si no cambian
   const totalConsumoLuz = useMemo(() => getTotalValue(consumoLuz), [consumoLuz]);
-  const totalConsumoAgua = useMemo(() => getTotalValue(consumoAgua) * 1000, [consumoAgua]); // Convertido a litros
+  const totalConsumoAgua = useMemo(() => getTotalValue(consumoAgua) * 1000, [consumoAgua]); // litros
 
-  // Crea un hash simple para comparar cambios en los datos
   const createHash = (data: object): string => {
     return JSON.stringify(data)
       .split("")
@@ -45,25 +40,37 @@ function App() {
       .toString();
   };
 
-  // Función que obtiene los datos de los sensores desde el backend
+  const calcularIncrementos = (data: ConsumoData[]): ConsumoData[] => {
+    const ordenadas = [...data].sort(
+      (a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
+    );
+
+    return ordenadas.map((item, index) => {
+      if (index === 0) return { ...item, incremento: 0 };
+      const incremento = item.medidas - ordenadas[index - 1].medidas;
+      return {
+        ...item,
+        incremento: isNaN(incremento) ? 0 : parseFloat(incremento.toFixed(4)),
+      };
+    });
+  };
+
   const DataSensor = async () => {
     try {
       const today = new Date();
-      const yesterday = new Date(Date.now() - 86400000); // Día anterior
+      const yesterday = new Date(Date.now() - 86400000);
 
-      // Obtiene los datos de hoy
       const responseToday = await fetch(
         import.meta.env.VITE_SENSORS_ENDPOINT + "?date=" + today.toLocaleDateString("en-CA")
       );
       const dataToday: ConsumoData[] = await responseToday.json();
 
-      // Filtra por tipo de sensor
       const luzHoyRaw = dataToday.filter((item: ConsumoData) => item.idSensor === 1);
       const aguaHoyRaw = dataToday.filter((item: ConsumoData) => item.idSensor === 2);
       const temperaturaHoyRaw = dataToday.filter((item: ConsumoData) => item.idSensor === 5);
       const humedadHoyRaw = dataToday.filter((item: ConsumoData) => item.idSensor === 6);
 
-      // Selecciona la última medida de temperatura y humedad
+      // Obtener el último valor de temperatura y humedad
       if (temperaturaHoyRaw.length > 0) {
         const ultimaTemp = temperaturaHoyRaw.reduce((a, b) =>
           new Date(a.fecha) > new Date(b.fecha) ? a : b
@@ -77,11 +84,9 @@ function App() {
         setHumedad(ultimaHum.medidas);
       }
 
-      // Ya no se recalculan los incrementos, el backend los entrega
-      const luzHoy = luzHoyRaw;
-      const aguaHoy = aguaHoyRaw;
+      const luzHoy = calcularIncrementos(luzHoyRaw);
+      const aguaHoy = calcularIncrementos(aguaHoyRaw);
 
-      // Obtiene los datos de ayer
       const responseYesterday = await fetch(
         import.meta.env.VITE_SENSORS_ENDPOINT + "?date=" + yesterday.toLocaleDateString("en-CA")
       );
@@ -90,14 +95,12 @@ function App() {
       const luzAyerRaw = dataYesterday.filter((item: ConsumoData) => item.idSensor === 1);
       const aguaAyerRaw = dataYesterday.filter((item: ConsumoData) => item.idSensor === 2);
 
-      // Obtiene los totales de ayer a partir de los incrementos
-      const totalLuzAyer = getTotalValue(luzAyerRaw);
+      const totalLuzAyer = getTotalValue(calcularIncrementos(luzAyerRaw));
       setConsumoLuzAyer(totalLuzAyer > 0 ? totalLuzAyer : 1);
 
-      const totalAguaAyer = getTotalValue(aguaAyerRaw) * 1000;
+      const totalAguaAyer = getTotalValue(calcularIncrementos(aguaAyerRaw)) * 1000;
       setConsumoAguaAyer(totalAguaAyer > 0 ? totalAguaAyer : 1);
 
-      // Actualiza si los datos son diferentes
       const newHash = createHash([...luzHoy, ...aguaHoy]);
       if (hashRef.current !== newHash) {
         hashRef.current = newHash;
@@ -109,7 +112,6 @@ function App() {
     }
   };
 
-  // Ejecuta la obtención de datos al montar el componente y cada 30 minutos
   useEffect(() => {
     DataSensor();
 
@@ -120,7 +122,6 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Calcula un color interpolado para los anillos
   const getInterpolatedColor = (color: string, percentage: number): string => {
     if (color === "#FADB3E") {
       const start = [255, 221, 128];
@@ -139,7 +140,6 @@ function App() {
     return `rgb(${interpolated[0]}, ${interpolated[1]}, ${interpolated[2]})`;
   };
 
-  // Dibuja un anillo estilo Apple para visualización del consumo
   const renderAppleRing = (
     value: number,
     max: number,
@@ -204,6 +204,8 @@ function App() {
       </>
     );
   };
+
+
 
   return (
     <>

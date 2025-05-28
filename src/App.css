@@ -122,7 +122,6 @@ button:hover {
 }
 
 .circulitos{
-  width: 90vw;
 }
 
 .bottom{
@@ -135,14 +134,14 @@ button:hover {
 }
 
 .consumo{
-  width: 50%;
+  padding-left: 10px;
+  width: 60%;
   flex-direction: column;
 }
 
 .consumo h3{
   display: flex;
   justify-content: space-between;
-  margin-left: -4.3%;
 }
 
 canvas {
@@ -151,4 +150,8 @@ canvas {
 
 .temp{  
   margin-top: -228px;
+}
+
+.hum{  
+  margin-top: -205px;
 }

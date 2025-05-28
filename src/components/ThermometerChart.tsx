@@ -10,67 +10,80 @@ interface ThermometerChartProps {
 const ThermometerChart: React.FC<ThermometerChartProps> = ({
   value,
   max = 50,
-  height = 300,
-  width = 80,
+  height = 320,
+  width = 200,
 }) => {
   const safeValue = typeof value === "number" ? value : 0;
   const percentage = Math.min(safeValue / max, 1);
-  const fillHeight = (height - 40) * percentage;
+  const fillHeight = (height - 60) * percentage; // ajustado para dejar espacio para el bulbo
+  const bulbRadius = 20;
+  const bulbCenterX = width / 2;
+  const bulbCenterY = height - bulbRadius;
 
   return (
-    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} style={{ overflow: "visible" }}>
-  {/* Termómetro contorno (tubo + bulbo) */}
-  <path
-    d={`
-      M ${width / 2 - 10} 20
-      a 10 10 0 0 1 20 0
-      v ${height - 60}
-      a 20 20 0 1 1 -20 0
-      z
-    `}
-    fill="red"
-    stroke="#333"
-    strokeWidth={2}
-  />
+    <svg width={width + 10} height={height} viewBox={`0 0 ${width + 10} ${height}`}>
+      {/* Definir gradiente */}
+      <defs>
+        <linearGradient id="thermo-gradient" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stopColor="orange" />
+          <stop offset="100%" stopColor="red" />
+        </linearGradient>
+        <clipPath id="clipPathTube">
+          <rect
+            x={width / 2 - 10}
+            y={20}
+            width={20}
+            height={height - 60}
+            rx={10}
+          />
+        </clipPath>
+      </defs>
 
-  {/* Máscara para contener el relleno dentro del termómetro */}
-  <mask id="thermoMask">
-    <rect width="100%" height="100%" fill="white" />
-    <path
-      d={`
-        M ${width / 2 - 10} 20
-        a 10 10 0 0 1 20 0
-        v ${height - 60}
-        a 20 20 0 1 1 -20 0
-        z
-      `}
-      fill="black"
-    />
-  </mask>
+      {/* Contorno del termómetro */}
+      <path
+        d={`
+          M ${width / 2 - 10} 20
+          a 10 10 0 0 1 20 0
+          v ${height - 60}
+          a 20 20 0 1 1 -20 0
+          z
+        `}
+        fill="none"
+        stroke="#333"
+        strokeWidth={2}
+      />
 
-  {/* Relleno del termómetro */}
-  <rect
-    x={width / 2 - 10}
-    y={height - 20 - fillHeight}
-    width={20}
-    height={fillHeight}
-    fill="red"
-  />
+      {/* Relleno del tubo con gradiente */}
+      <rect
+        x={width / 2 - 10}
+        y={height - bulbRadius * 2 - fillHeight}
+        width={20}
+        height={fillHeight}
+        fill="url(#thermo-gradient)"
+        clipPath="url(#clipPathTube)"
+      />
 
-  {/* Valor numérico */}
-  <text
-    x={width / 2}
-    y={height - fillHeight - 30}
-    textAnchor="middle"
-    fill="#111"
-    fontSize="18"
-    fontWeight="bold"
-    style={{ pointerEvents: "none" }}
-  >
-    {typeof value === "number" ? `${value.toFixed(1)}°C` : "--"}
-  </text>
-</svg>
+      {/* Bulbo relleno con gradiente */}
+      <circle
+        cx={bulbCenterX}
+        cy={bulbCenterY-2}
+        r={bulbRadius}
+        fill="orange"
+      />
 
+      {/* Valor numérico */}
+      <text
+        x={bulbCenterX + 35}
+        y={height - fillHeight - bulbRadius * 2 + 6}
+        textAnchor="middle"
+        fill="#111"
+        fontSize="18"
+        fontWeight="bold"
+        style={{ pointerEvents: "none" }}
+      >
+        {typeof value === "number" ? `――${value.toFixed(1)}°C` : "--"}
+      </text>
+    </svg>
   );
 };
 
