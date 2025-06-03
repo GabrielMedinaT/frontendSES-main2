@@ -1,27 +1,34 @@
 import React from "react";
-
+// interface ThermometerChartProps 
 interface ThermometerChartProps {
   value: number | null | undefined;
   max?: number;
   height?: number;
   width?: number;
 }
-
+// Componente ThermometerChart
+// Este componente muestra un termómetro con un gradiente de color
 const ThermometerChart: React.FC<ThermometerChartProps> = ({
   value,
   max = 50,
   height = 320,
   width = 200,
 }) => {
-  const safeValue = typeof value === "number" ? value : 0;
-  const percentage = Math.min(safeValue / max, 1);
-  const fillHeight = (height - 60) * percentage; // ajustado para dejar espacio para el bulbo
-  const bulbRadius = 20;
-  const bulbCenterX = width / 2;
+  const safeValue = typeof value === "number" ? value : 1; // Aseguramos que el valor sea un número, si no, usamos 0 
+    const percentage = max > 0 ? Math.min(safeValue / max, 1) : 0; // Calculamos el porcentaje del valor respecto al máximo, asegurando que no supere 1 y evitando división por cero
+  const fillHeight = (height - 60) * percentage; // ajustado para dejar espacio para el bulbo 
+  const bulbRadius = 20; // Radio del bulbo del termómetro
+  const bulbCenterX = width / 2; // Centro del bulbo en el eje X
+  // Centro del bulbo en el eje Y
   const bulbCenterY = height - bulbRadius;
 
   return (
-    <svg width={width + 10} height={height} viewBox={`0 0 ${width + 10} ${height}`}>
+    <svg
+      width="100%"
+      height="auto"
+      viewBox={`0 0 ${width + 10} ${height}`}
+      style={{ maxWidth: width + 10, height: "auto", display: "block" }}
+    >
       {/* Definir gradiente */}
       <defs>
         <linearGradient id="thermo-gradient" x1="0" y1="1" x2="0" y2="0">

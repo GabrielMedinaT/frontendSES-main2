@@ -1,13 +1,13 @@
 import { useState, useEffect, useMemo, useRef } from "react";
-import "./App.css";
-import { Carousel } from "./components/Carrousel";
+import { Carousel } from "./Carrousel";
+import "./Kiosko02.css";
 
-import LogoRincon from "./assets/logo-rincon.svg";
+import LogoRincon from "../assets/logo-rincon.svg";
 import SES from "/SmartEcoSchoolSquared.png";
-import LogoZazume from "./assets/logo-zazume.svg";
-import QRSes from "./assets/qr-ses.svg";
-import ThermometerChart from "./components/ThermometerChart";
-import WaterDropChart from "./components/WaterDropCharp";
+import LogoZazume from "../assets/logo-zazume.svg";
+import QRSes from "../assets/qr-ses.svg";
+import ThermometerChart from "./ThermometerChart";
+import WaterDropChart from "./WaterDropCharp";
 
 // Interfaz que define la estructura esperada de los datos del sensor
 interface ConsumoData {
@@ -19,7 +19,7 @@ interface ConsumoData {
   medidas: number;
 }
 
-function App() {
+function Kiosko02() {
   // Estados para los diferentes tipos de datos
   const [consumoLuz, setConsumoLuz] = useState<ConsumoData[]>([]);
   const [consumoAgua, setConsumoAgua] = useState<ConsumoData[]>([]);
@@ -28,7 +28,6 @@ function App() {
   const [temperatura, setTemperatura] = useState<number>(25);
   const [humedad, setHumedad] = useState<number>(60);
   const hashRef = useRef<string>(""); // Referencia para evitar recargas innecesarias
-
 
   // Suma los valores de incremento de una lista de datos
   const getTotalValue = (arr: ConsumoData[]): number =>
@@ -140,54 +139,43 @@ function App() {
     return `rgb(${interpolated[0]}, ${interpolated[1]}, ${interpolated[2]})`;
   };
 
-// Mensajes de consumo, definidos en el cuerpo principal del componente
-const mensajeLuz =
-  totalConsumoLuz < consumoLuzAyer
-    ? "💡 Bien, lo estamos logrando. Ese es el camino del ahorro."
-    : "💡 Mañana es otro buen día para lograrlo. Poco a poco se conseguirá.";
+  // Dibuja un anillo estilo Apple para visualización del consumo
+  const renderAppleRing = (
+    value: number,
+    max: number,
+    color: string,
+    radius: number,
+    icon: string
+  ) => {
+    const strokeWidth = 30;
+    const center = 250;
+    const safeMax = max > 0 && !isNaN(max) ? max : 1; // Evita división por cero
+    const safeValue = !isNaN(value) ? value : 0; // Evita NaN en el valor
+    const percentage = safeValue >= safeMax ? 1 : safeValue / safeMax;// Calcula el porcentaje del valor respecto al máximo
+    const startAngle = 135;
+    const endAngle = 135 + 270;
+    const angleSpan = 270 * percentage;
+    const valueEndAngle = startAngle + angleSpan;
 
-const mensajeAgua =
-  totalConsumoAgua < consumoAguaAyer
-    ? "🚰 Genial, vamos por buen camino con el ahorro de agua."
-    : "🚰 Ánimo, mañana podemos mejorar el consumo de agua.";
+    const baseStart = (Math.PI / 180) * startAngle;
+    const baseEnd = (Math.PI / 180) * endAngle;
+    const valEnd = (Math.PI / 180) * valueEndAngle;
 
-// Dibuja un anillo estilo Apple para visualización del consumo
-const renderAppleRing = (
-  value: number,
-  max: number,
-  color: string,
-  radius: number,
-  icon: string
-) => {
-  const strokeWidth = 30;
-  const center = 250;
-  const safeMax = max > 0 && !isNaN(max) ? max : 1; // Evita división por cero
-  const safeValue = !isNaN(value) ? value : 0; // Evita NaN en el valor
-  const percentage = safeValue >= safeMax ? 1 : safeValue / safeMax;// Calcula el porcentaje del valor respecto al máximo
-  const startAngle = 135;
-  const endAngle = 135 + 270;
-  const angleSpan = 270 * percentage;
-  const valueEndAngle = startAngle + angleSpan;
+    const bx1 = center + radius * Math.cos(baseStart);
+    const by1 = center + radius * Math.sin(baseStart);
+    const bx2 = center + radius * Math.cos(baseEnd);
+    const by2 = center + radius * Math.sin(baseEnd);
 
-  const baseStart = (Math.PI / 180) * startAngle;
-  const baseEnd = (Math.PI / 180) * endAngle;
-  const valEnd = (Math.PI / 180) * valueEndAngle;
+    const vx1 = center + radius * Math.cos(baseStart);
+    const vy1 = center + radius * Math.sin(baseStart);
+    const vx2 = center + radius * Math.cos(valEnd);
+    const vy2 = center + radius * Math.sin(valEnd);
 
-  const bx1 = center + radius * Math.cos(baseStart);
-  const by1 = center + radius * Math.sin(baseStart);
-  const bx2 = center + radius * Math.cos(baseEnd);
-  const by2 = center + radius * Math.sin(baseEnd);
+    const interpolatedColor = getInterpolatedColor(color, percentage);
 
-  const vx1 = center + radius * Math.cos(baseStart);
-  const vy1 = center + radius * Math.sin(baseStart);
-  const vx2 = center + radius * Math.cos(valEnd);
-  const vy2 = center + radius * Math.sin(valEnd);
-
-  const interpolatedColor = getInterpolatedColor(color, percentage);
-
-  return (
-    <>
-      <defs>
+    return (
+      <>
+        <defs>
           <linearGradient id={`grad-${icon}`} x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor={color} />
             <stop offset="100%" stopColor={interpolatedColor} />
@@ -216,51 +204,48 @@ const renderAppleRing = (
       </>
     );
   };
-return (
-  <>
-    <div className="header">
-      <Carousel images={[{ src: QRSes, alt: "QR de SmartEcoSchool" }, { src: LogoRincon, alt: "IES El Rincón" }]} />
-      <div className="title">
-        <p>Consumo de agua y luz</p>
-      </div>
-      <Carousel images={[{ src: SES, alt: "SmartEcoSchool" }, { src: LogoZazume, alt: "Zazume" }]} />
-    </div>
 
-    <div className="consumo">
+  return (
+    <>
+      <div className="header">
+        <Carousel images={[{ src: QRSes, alt: "QR de SmartEcoSchool" }, { src: LogoRincon, alt: "IES El Rincón" }]} />
+        <div className="title">
+          <p>Consumo de agua y luz</p>
+        </div>
+        <Carousel images={[{ src: SES, alt: "SmartEcoSchool" }, { src: LogoZazume, alt: "Zazume" }]} />
+      </div>
+
       <div className="circulitos" style={{ display: "flex", justifyContent: "center", marginTop: "0px" }}>
         <svg width="480" height="480">
           {renderAppleRing(totalConsumoAgua, consumoAguaAyer, "#4AC7F7", 210, "🚰")}
           {renderAppleRing(totalConsumoLuz, consumoLuzAyer, "#FADB3E", 170, "💡")}
         </svg>
       </div>
-      <div className="consumo-texto"> 
-      <h3>
-        Hoy: {totalConsumoLuz.toFixed(2)} kWh &nbsp;&nbsp;&nbsp;&nbsp;
-        Ayer: {consumoLuzAyer.toFixed(2)} kWh
-      </h3>
-      <p style={{ fontStyle: "italic", color: "#3b3b3b", marginBottom: "1rem" }}>{mensajeLuz}</p>
 
-      <h3>
-        Hoy: {totalConsumoAgua.toFixed(2)} litros &nbsp;&nbsp;&nbsp;&nbsp;
-        Ayer: {consumoAguaAyer.toFixed(2)} litros
-      </h3>
-      <p style={{ fontStyle: "italic", color: "#3b3b3b" }}>{mensajeAgua}</p>
+      <div className="bottom">
+        <div className="temp" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <ThermometerChart value={temperatura} max={50} />
+        </div>
+
+        <div className="consumo">
+          <h3>
+            <text>Hoy: {totalConsumoLuz.toFixed(2)} kWh</text>
+            <text>    </text>
+            <text>Ayer: {consumoLuzAyer.toFixed(2)} kWh</text>
+          </h3>
+          <h3>
+            <text>Hoy: {totalConsumoAgua.toFixed(2)} litros</text>
+            <text>    </text>
+            <text>Ayer: {consumoAguaAyer.toFixed(2)} litros</text>
+          </h3>
+        </div>
+
+        <div className="hum">
+          <WaterDropChart value={humedad} max={100} />
+        </div>
       </div>
-    </div>
-
- <div className="bottom">
-  <div className="temp">
-    <ThermometerChart value={temperatura} max={50} />
-  </div>
-
-  <div className="hum">
-    <WaterDropChart value={humedad} max={100} />
-  </div>
-</div>
-
-  </>
-);
-
+    </>
+  );
 }
 
-export default App;
+export default Kiosko02;

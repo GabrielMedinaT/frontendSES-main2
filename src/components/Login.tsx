@@ -5,13 +5,15 @@ interface LoginProps {
   onLogin: (username: string, password: string) => void;
 }
 
-export default function Login({ onLogin }: LoginProps) {
-  const [username, setUsername] = useState<string>("");
+export default function Login({ onLogin }: LoginProps) {// Login.tsx
+  const [username, setUsername] = useState<string>("");//
   const [password, setPassword] = useState<string>("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {// 
     e.preventDefault();
-    onLogin(username, password);
+    onLogin(username, password); // Llama a la función onLogin pasada como prop 
+    setUsername(""); // Limpia el campo de usuario
+    setPassword(""); // Limpia el campo de contraseña
   };
 
   return (

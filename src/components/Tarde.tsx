@@ -12,19 +12,19 @@ export default function Tarde() {
   const [error, setError] = useState<string>("");
   const [kioskoSeleccionado, setKioskoSeleccionado] = useState<string>("default");
   const [horarioActual, setHorarioActual] = useState<Horario | null>(null);
-
+  // Mapeo de kioskos a IDs
   const idMap: Record<string, number> = {
     kiosko1: 2,
     kiosko2: 4,
     kiosko3: 6,
   };
-
+ //! Función para comparar dos horas en formato "HH:MM"
   const compararHoras = (h1: string, h2: string): number => {
     const [h1h, h1m] = h1.split(":").map(Number);
     const [h2h, h2m] = h2.split(":").map(Number);
     return h1h * 60 + h1m - (h2h * 60 + h2m);
   };
-
+  //! Carga el horario del kiosko seleccionado
   const cargarHorario = (kiosko: string): void => {
     const id = idMap[kiosko];
     fetch(`http://2.139.196.172:3306/api/powers/${id}`)
@@ -42,7 +42,7 @@ export default function Tarde() {
         setHorarioActual(null);
       });
   };
-
+  //! Maneja el guardado del horario
   const handleGuardar = (): void => {
     setError("");
 
@@ -80,7 +80,7 @@ export default function Tarde() {
       setError("Selecciona un kiosko.");
       return;
     }
-
+    //! Si todo es correcto, se procede a guardar el horario
     const id = idMap[kioskoSeleccionado];
 
     fetch(`http://2.139.196.172:3306/api/powers/${id}`, {
@@ -107,7 +107,7 @@ export default function Tarde() {
         console.error(err);
       });
   };
-
+  //! Maneja la selección del kiosko
   const handleSeleccion = (e: ChangeEvent<HTMLSelectElement>): void => {
     const kiosko = e.target.value;
     setKioskoSeleccionado(kiosko);
@@ -117,7 +117,7 @@ export default function Tarde() {
       setHorarioActual(null);
     }
   };
-
+  //! Renderiza el componente
   return (
     <div>
       <div className="kioskos">
@@ -128,9 +128,9 @@ export default function Tarde() {
           onChange={handleSeleccion}
         >
           <option value="default">Seleccione kiosko</option>
-          <option value="kiosko1">Kiosko edificio principal</option>
-          <option value="kiosko2">Ni idea de donde está</option>
-          <option value="kiosko3">Vete a saber donde mierdas está</option>
+          <option value="kiosko1">Kiosko edificio Guanarteme</option>
+          <option value="kiosko2">Kiosko edificio principal</option>
+          <option value="kiosko3">Kiosko sala de profesores</option>
         </select>
         <div className="horarios">
           <input
